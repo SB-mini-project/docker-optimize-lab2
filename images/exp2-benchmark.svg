@@ -1,0 +1,125 @@
+<svg viewBox="0 0 720 390" xmlns="http://www.w3.org/2000/svg" font-family="'Courier New', monospace">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <linearGradient id="barBefore" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f87171"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+    <linearGradient id="barA1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+    <linearGradient id="barA2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="barTB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fca5a5"/>
+      <stop offset="100%" stop-color="#9f1239"/>
+    </linearGradient>
+    <linearGradient id="barTA1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#86efac"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+    <linearGradient id="barTA2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bfdbfe"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="720" height="390" fill="url(#bg2)" rx="12"/>
+  <rect width="720" height="390" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
+
+  <text x="360" y="34" text-anchor="middle" fill="#1e293b" font-size="15" font-weight="bold" letter-spacing="1">Benchmark Results — Experiment 2</text>
+
+  <!-- ===== IMAGE SIZE ===== -->
+  <text x="60" y="60" fill="#64748b" font-size="11" letter-spacing="1" font-weight="bold">IMAGE SIZE (MB)</text>
+
+  <!-- Grid lines size -->
+  <line x1="60" y1="185" x2="660" y2="185" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="162" x2="660" y2="162" stroke="#e2e8f0" stroke-width="0.8"/>
+  <line x1="60" y1="139" x2="660" y2="139" stroke="#e2e8f0" stroke-width="0.8"/>
+  <line x1="60" y1="116" x2="660" y2="116" stroke="#e2e8f0" stroke-width="0.8"/>
+  <line x1="60" y1="93"  x2="660" y2="93"  stroke="#e2e8f0" stroke-width="0.8"/>
+  <line x1="60" y1="70"  x2="660" y2="70"  stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="52" y="188" text-anchor="end" fill="#94a3b8" font-size="9">0</text>
+  <text x="52" y="165" text-anchor="end" fill="#94a3b8" font-size="9">100</text>
+  <text x="52" y="142" text-anchor="end" fill="#94a3b8" font-size="9">200</text>
+  <text x="52" y="119" text-anchor="end" fill="#94a3b8" font-size="9">300</text>
+  <text x="52" y="96"  text-anchor="end" fill="#94a3b8" font-size="9">400</text>
+  <text x="52" y="73"  text-anchor="end" fill="#94a3b8" font-size="9">500</text>
+
+  <!-- Bar: BEFORE 497.0MB → 497/500*115=114.3px -->
+  <rect x="120" y="70.7" width="70" height="114.3" rx="5" fill="url(#barBefore)"/>
+  <text x="155" y="65" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="bold">497.0</text>
+  <text x="155" y="198" text-anchor="middle" fill="#64748b" font-size="9">BEFORE</text>
+  <text x="155" y="209" text-anchor="middle" fill="#94a3b8" font-size="8">(JDK)</text>
+
+  <!-- Bar: AFTER1 308.8MB → 308.8/500*115=71.0px -->
+  <rect x="320" y="114" width="70" height="71" rx="5" fill="url(#barA1)"/>
+  <text x="355" y="108" text-anchor="middle" fill="#16a34a" font-size="12" font-weight="bold">308.8</text>
+  <text x="355" y="198" text-anchor="middle" fill="#64748b" font-size="9">AFTER 1</text>
+  <text x="355" y="209" text-anchor="middle" fill="#94a3b8" font-size="8">(JRE)</text>
+
+  <!-- Bar: AFTER2 308.6MB → 308.6/500*115=71.0px -->
+  <rect x="520" y="114" width="70" height="71" rx="5" fill="url(#barA2)"/>
+  <text x="555" y="108" text-anchor="middle" fill="#2563eb" font-size="12" font-weight="bold">308.6</text>
+  <text x="555" y="198" text-anchor="middle" fill="#64748b" font-size="9">AFTER 2</text>
+  <text x="555" y="209" text-anchor="middle" fill="#94a3b8" font-size="8">(Multi-stage)</text>
+
+  <!-- Reduction callouts -->
+  <line x1="190" y1="114" x2="320" y2="114" stroke="#15803d" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="255" y="108" text-anchor="middle" fill="#15803d" font-size="11" font-weight="bold">↓ 37.9%</text>
+  <text x="255" y="122" text-anchor="middle" fill="#15803d" font-size="9">−188.2 MB</text>
+
+  <!-- Note box -->
+  <rect x="620" y="68" width="88" height="60" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
+  <text x="664" y="85" text-anchor="middle" fill="#475569" font-size="9" font-weight="bold">크기 동일 이유</text>
+  <text x="664" y="100" text-anchor="middle" fill="#94a3b8" font-size="8">FFmpeg가</text>
+  <text x="664" y="113" text-anchor="middle" fill="#94a3b8" font-size="8">크기 지배</text>
+  <text x="664" y="124" text-anchor="middle" fill="#94a3b8" font-size="8">~180MB</text>
+
+  <!-- Divider -->
+  <line x1="40" y1="220" x2="680" y2="220" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- ===== BUILD TIME (COLD) ===== -->
+  <text x="60" y="242" fill="#64748b" font-size="11" letter-spacing="1" font-weight="bold">COLD BUILD TIME (ms) — 베이스 이미지 pull 포함</text>
+
+  <!-- Grid lines time -->
+  <line x1="60" y1="358" x2="660" y2="358" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="335" x2="660" y2="335" stroke="#e2e8f0" stroke-width="0.8"/>
+  <line x1="60" y1="311" x2="660" y2="311" stroke="#e2e8f0" stroke-width="0.8"/>
+  <line x1="60" y1="287" x2="660" y2="287" stroke="#e2e8f0" stroke-width="0.8"/>
+  <line x1="60" y1="264" x2="660" y2="264" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="52" y="361" text-anchor="end" fill="#94a3b8" font-size="9">0</text>
+  <text x="52" y="338" text-anchor="end" fill="#94a3b8" font-size="8">50k</text>
+  <text x="52" y="314" text-anchor="end" fill="#94a3b8" font-size="8">100k</text>
+  <text x="52" y="290" text-anchor="end" fill="#94a3b8" font-size="8">150k</text>
+  <text x="52" y="267" text-anchor="end" fill="#94a3b8" font-size="8">200k</text>
+
+  <!-- scale: 212644ms=95px → 0.000447px/ms -->
+  <!-- BEFORE 212644ms → 95px, y=358-95=263 -->
+  <rect x="120" y="263" width="70" height="95" rx="5" fill="url(#barTB)"/>
+  <text x="155" y="258" text-anchor="middle" fill="#9f1239" font-size="11" font-weight="bold">212,644</text>
+
+  <!-- AFTER1 130845ms → 58.5px, y=358-59=299 -->
+  <rect x="320" y="299" width="70" height="59" rx="5" fill="url(#barTA1)"/>
+  <text x="355" y="293" text-anchor="middle" fill="#15803d" font-size="11" font-weight="bold">130,845</text>
+
+  <!-- AFTER2 120472ms → 53.9px, y=358-54=304 -->
+  <rect x="520" y="304" width="70" height="54" rx="5" fill="url(#barTA2)"/>
+  <text x="555" y="298" text-anchor="middle" fill="#1d4ed8" font-size="11" font-weight="bold">120,472</text>
+
+  <!-- Note: FFmpeg dominates -->
+  <rect x="620" y="260" width="88" height="74" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
+  <text x="664" y="276" text-anchor="middle" fill="#475569" font-size="9" font-weight="bold">시간 차이 이유</text>
+  <text x="664" y="291" text-anchor="middle" fill="#94a3b8" font-size="8">BEFORE:</text>
+  <text x="664" y="303" text-anchor="middle" fill="#94a3b8" font-size="8">JDK pull 추가</text>
+  <text x="664" y="315" text-anchor="middle" fill="#94a3b8" font-size="8">FFmpeg 설치</text>
+  <text x="664" y="327" text-anchor="middle" fill="#94a3b8" font-size="8">시간이 지배적</text>
+
+  <text x="360" y="381" text-anchor="middle" fill="#94a3b8" font-size="10">* N=3 runs avg · 베이스 이미지 pull 포함 완전 초기화</text>
+</svg>

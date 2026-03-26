@@ -1,0 +1,72 @@
+<svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" font-family="'Courier New', monospace">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <linearGradient id="redPanel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff5f5"/>
+      <stop offset="100%" stop-color="#fff0f0"/>
+    </linearGradient>
+    <linearGradient id="greenPanel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0fff4"/>
+      <stop offset="100%" stop-color="#ebffef"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="720" height="400" fill="url(#bg)" rx="12"/>
+  <rect width="720" height="400" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
+
+  <text x="360" y="38" text-anchor="middle" fill="#1e293b" font-size="15" font-weight="bold" letter-spacing="1">Layer Structure Comparison</text>
+
+  <!-- BEFORE panel -->
+  <rect x="30" y="56" width="308" height="318" rx="10" fill="url(#redPanel)" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="184" y="80" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="bold" letter-spacing="2">✗  BEFORE  (JDK)</text>
+
+  <rect x="48" y="94" width="272" height="64" rx="7" fill="#ffffff" stroke="#fca5a5" stroke-width="1.2"/>
+  <text x="66" y="112" fill="#94a3b8" font-size="9" letter-spacing="1">LAYER 0  ·  FROM</text>
+  <text x="66" y="130" fill="#1e293b" font-size="11" font-weight="bold">Alpine Linux + JDK 17</text>
+  <text x="66" y="148" fill="#dc2626" font-size="10">컴파일러 · javac · jshell 전체 포함</text>
+
+  <rect x="48" y="170" width="272" height="54" rx="7" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
+  <text x="66" y="188" fill="#94a3b8" font-size="9" letter-spacing="1">LAYER 1  ·  COPY</text>
+  <text x="66" y="205" fill="#1e293b" font-size="11">*SNAPSHOT.jar  ← 와일드카드</text>
+  <text x="66" y="218" fill="#dc2626" font-size="10">예측 불가능한 빌드 결과물</text>
+
+  <rect x="48" y="236" width="272" height="54" rx="7" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
+  <text x="66" y="254" fill="#94a3b8" font-size="9" letter-spacing="1">CONFIG  ·  WORKDIR / ENTRYPOINT</text>
+  <text x="66" y="271" fill="#1e293b" font-size="11">WORKDIR 미설정  →  루트( / ) 실행</text>
+  <text x="66" y="284" fill="#dc2626" font-size="10">root 권한 실행 → 컨테이너 탈출 위협</text>
+
+  <rect x="78" y="305" width="212" height="48" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="184" y="322" text-anchor="middle" fill="#6b7280" font-size="10">Total Image Size</text>
+  <text x="184" y="342" text-anchor="middle" fill="#dc2626" font-size="20" font-weight="bold">222.3 MB</text>
+
+  <!-- Arrow -->
+  <text x="360" y="222" text-anchor="middle" fill="#94a3b8" font-size="26" font-weight="bold">→</text>
+
+  <!-- AFTER panel -->
+  <rect x="382" y="56" width="308" height="318" rx="10" fill="url(#greenPanel)" stroke="#86efac" stroke-width="1.5"/>
+  <text x="536" y="80" text-anchor="middle" fill="#16a34a" font-size="12" font-weight="bold" letter-spacing="2">✓  AFTER  (JRE)</text>
+
+  <rect x="400" y="94" width="272" height="64" rx="7" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
+  <text x="418" y="112" fill="#94a3b8" font-size="9" letter-spacing="1">LAYER 0  ·  FROM</text>
+  <text x="418" y="130" fill="#1e293b" font-size="11" font-weight="bold">Alpine Linux + JRE 17</text>
+  <text x="418" y="148" fill="#16a34a" font-size="10">런타임만 포함 · CVE 노출 감소</text>
+
+  <rect x="400" y="170" width="272" height="54" rx="7" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
+  <text x="418" y="188" fill="#94a3b8" font-size="9" letter-spacing="1">LAYER 1  ·  WORKDIR + COPY</text>
+  <text x="418" y="205" fill="#1e293b" font-size="11">WORKDIR /app  +  *.jar</text>
+  <text x="418" y="218" fill="#16a34a" font-size="10">명시적 경로 · 예측 가능한 빌드</text>
+
+  <rect x="400" y="236" width="272" height="54" rx="7" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
+  <text x="418" y="254" fill="#94a3b8" font-size="9" letter-spacing="1">CONFIG  ·  USER + ENTRYPOINT</text>
+  <text x="418" y="271" fill="#1e293b" font-size="11">USER appuser  (system user)</text>
+  <text x="418" y="284" fill="#16a34a" font-size="10">Privilege Escalation 방어</text>
+
+  <rect x="430" y="305" width="212" height="48" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+  <text x="536" y="322" text-anchor="middle" fill="#6b7280" font-size="10">Total Image Size</text>
+  <text x="536" y="342" text-anchor="middle" fill="#16a34a" font-size="20" font-weight="bold">124.9 MB  <tspan fill="#15803d" font-size="12">↓ 43.8%</tspan></text>
+
+  <text x="360" y="388" text-anchor="middle" fill="#94a3b8" font-size="10">* N=5 runs · 베이스 이미지 pull 포함 완전 초기화 · Ubuntu 서버 환경</text>
+</svg>

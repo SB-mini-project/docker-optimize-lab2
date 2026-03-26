@@ -1,0 +1,69 @@
+<svg viewBox="0 0 720 390" xmlns="http://www.w3.org/2000/svg" font-family="'Courier New', monospace">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <linearGradient id="axisGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#dcfce7"/>
+      <stop offset="50%"  stop-color="#fef9c3"/>
+      <stop offset="100%" stop-color="#fee2e2"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="720" height="390" fill="url(#bg3)" rx="12"/>
+  <rect width="720" height="390" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
+
+  <text x="360" y="36" text-anchor="middle" fill="#1e293b" font-size="15" font-weight="bold" letter-spacing="1">Layer Caching Strategy</text>
+
+  <!-- Frequency axis bar -->
+  <rect x="55" y="54" width="610" height="30" rx="7" fill="url(#axisGrad)"/>
+  <text x="130" y="73" text-anchor="middle" fill="#16a34a" font-size="11" font-weight="bold">변경 빈도: 낮음 ← STABLE</text>
+  <text x="580" y="73" text-anchor="middle" fill="#dc2626" font-size="11" font-weight="bold">VOLATILE → 변경 빈도: 높음</text>
+
+  <!-- Position labels -->
+  <text x="55"  y="102" fill="#94a3b8" font-size="9">레이어 위치</text>
+  <line x1="130" y1="97" x2="650" y2="97" stroke="#cbd5e1" stroke-width="1.5"/>
+  <polygon points="650,93 660,97 650,101" fill="#cbd5e1"/>
+  <text x="148" y="109" fill="#94a3b8" font-size="9">상단 (FROM 근처)</text>
+  <text x="530" y="109" fill="#94a3b8" font-size="9">하단 (ENTRYPOINT 근처)</text>
+
+  <!-- Layer: FROM -->
+  <rect x="55" y="118" width="610" height="40" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <rect x="55" y="118" width="6"   height="40" rx="3" fill="#16a34a"/>
+  <text x="76" y="133" fill="#94a3b8" font-size="9" letter-spacing="1">FROM</text>
+  <text x="76" y="149" fill="#1e293b" font-size="11">eclipse-temurin:17-jre-alpine</text>
+  <text x="616" y="142" text-anchor="end" fill="#16a34a" font-size="10" font-weight="bold">캐시 HIT ✓</text>
+
+  <!-- Layer: RUN adduser -->
+  <rect x="55" y="165" width="610" height="40" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1.5"/>
+  <rect x="55" y="165" width="6"   height="40" rx="3" fill="#4ade80"/>
+  <text x="76" y="180" fill="#94a3b8" font-size="9" letter-spacing="1">RUN</text>
+  <text x="76" y="196" fill="#1e293b" font-size="11">addgroup -S appgroup &amp;&amp; adduser -S appuser -G appgroup</text>
+  <text x="616" y="189" text-anchor="end" fill="#16a34a" font-size="10" font-weight="bold">캐시 HIT ✓</text>
+
+  <!-- Layer: WORKDIR -->
+  <rect x="55" y="212" width="610" height="40" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5"/>
+  <rect x="55" y="212" width="6"   height="40" rx="3" fill="#93c5fd"/>
+  <text x="76" y="227" fill="#94a3b8" font-size="9" letter-spacing="1">WORKDIR</text>
+  <text x="76" y="243" fill="#1e293b" font-size="11">/app</text>
+  <text x="616" y="236" text-anchor="end" fill="#3b82f6" font-size="10" font-weight="bold">캐시 HIT ✓</text>
+
+  <!-- Layer: COPY jar — volatile -->
+  <rect x="55" y="259" width="610" height="40" rx="6" fill="#fffbeb" stroke="#fde68a" stroke-width="2"/>
+  <rect x="55" y="259" width="6"   height="40" rx="3" fill="#f59e0b"/>
+  <text x="76" y="274" fill="#94a3b8" font-size="9" letter-spacing="1">COPY</text>
+  <text x="76" y="290" fill="#1e293b" font-size="11">./build/libs/*.jar  app.jar</text>
+  <text x="616" y="283" text-anchor="end" fill="#b45309" font-size="10" font-weight="bold">변경 시 이하 무효화 ⚠</text>
+
+  <!-- Layer: ENTRYPOINT -->
+  <rect x="55" y="306" width="610" height="40" rx="6" fill="#fff5f5" stroke="#fca5a5" stroke-width="1.5"/>
+  <rect x="55" y="306" width="6"   height="40" rx="3" fill="#f87171"/>
+  <text x="76" y="321" fill="#94a3b8" font-size="9" letter-spacing="1">ENTRYPOINT</text>
+  <text x="76" y="337" fill="#1e293b" font-size="11">["java", "-jar", "app.jar", "--spring.profiles.active=prod"]</text>
+  <text x="616" y="330" text-anchor="end" fill="#dc2626" font-size="10" font-weight="bold">항상 최하단</text>
+
+  <!-- Key insight -->
+  <rect x="55" y="358" width="610" height="24" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="360" y="374" text-anchor="middle" fill="#3b82f6" font-size="10">💡  자주 바뀌는 레이어가 바뀌어도, 위의 안정적인 레이어는 캐시를 그대로 재사용한다</text>
+</svg>
