@@ -1,123 +1,134 @@
-<svg viewBox="0 0 720 490" xmlns="http://www.w3.org/2000/svg" font-family="'Courier New', monospace">
+<svg viewBox="0 0 740 520" xmlns="http://www.w3.org/2000/svg" font-family="'Courier New', monospace">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#f8fafc"/>
       <stop offset="100%" stop-color="#f1f5f9"/>
     </linearGradient>
-    <linearGradient id="redPanel" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#fff5f5"/>
-      <stop offset="100%" stop-color="#fff0f0"/>
-    </linearGradient>
-    <linearGradient id="greenPanel" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f0fff4"/>
-      <stop offset="100%" stop-color="#ebffef"/>
-    </linearGradient>
-    <linearGradient id="bluePanel" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#eff6ff"/>
-      <stop offset="100%" stop-color="#dbeafe"/>
-    </linearGradient>
   </defs>
 
-  <rect width="720" height="490" fill="url(#bg)" rx="12"/>
-  <rect width="720" height="490" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
+  <rect width="740" height="520" fill="url(#bg)" rx="12"/>
+  <rect width="740" height="520" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
 
-  <text x="360" y="34" text-anchor="middle" fill="#1e293b" font-size="15" font-weight="bold" letter-spacing="1">Layer Structure Comparison — Experiment 2</text>
-  <text x="360" y="50" text-anchor="middle" fill="#94a3b8" font-size="10">Animal Diary App (FFmpeg 포함 환경)</text>
+  <text x="370" y="30" text-anchor="middle" fill="#1e293b" font-size="14" font-weight="bold" letter-spacing="0.5">Layer Structure Comparison — Experiment 2</text>
+  <text x="370" y="46" text-anchor="middle" fill="#94a3b8" font-size="9">Animal Diary App (FFmpeg 포함 환경)</text>
 
-  <!-- ========== BEFORE panel ========== -->
-  <rect x="15" y="60" width="215" height="408" rx="10" fill="url(#redPanel)" stroke="#fca5a5" stroke-width="1.5"/>
-  <text x="122" y="82" text-anchor="middle" fill="#dc2626" font-size="11" font-weight="bold" letter-spacing="2">✗  BEFORE  (JDK)</text>
+  <!-- ========== BEFORE (JDK) ========== -->
+  <rect x="12" y="56" width="228" height="444" rx="10" fill="#fff5f5" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="126" y="76" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="bold" letter-spacing="1">✗  BEFORE  (JDK)</text>
 
-  <rect x="21" y="92" width="203" height="52" rx="6" fill="#ffffff" stroke="#fca5a5" stroke-width="1.2"/>
-  <text x="31" y="108" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 0  ·  FROM</text>
-  <text x="31" y="123" fill="#1e293b" font-size="10" font-weight="bold">eclipse-temurin:17-jdk</text>
-  <text x="31" y="137" fill="#dc2626" font-size="9">컴파일러 전체 포함 · 불필요하게 무거움</text>
+  <rect x="20" y="86" width="212" height="58" rx="6" fill="#ffffff" stroke="#fca5a5" stroke-width="1.2"/>
+  <rect x="20" y="86" width="5" height="58" rx="2" fill="#dc2626"/>
+  <text x="33" y="100" fill="#94a3b8" font-size="8" letter-spacing="0.5">LAYER 0  ·  FROM</text>
+  <text x="33" y="116" fill="#1e293b" font-size="9" font-weight="bold">eclipse-temurin:17-jdk</text>
+  <text x="33" y="130" fill="#dc2626" font-size="8">컴파일러 전체 포함</text>
+  <text x="33" y="142" fill="#dc2626" font-size="8">불필요하게 무거움</text>
 
-  <rect x="21" y="150" width="203" height="52" rx="6" fill="#ffffff" stroke="#fca5a5" stroke-width="1.2"/>
-  <text x="31" y="166" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 1  ·  RUN</text>
-  <text x="31" y="181" fill="#1e293b" font-size="10">apt-get install ffmpeg</text>
-  <text x="31" y="195" fill="#dc2626" font-size="9">추천 패키지까지 전부 설치</text>
+  <rect x="20" y="150" width="212" height="56" rx="6" fill="#ffffff" stroke="#fca5a5" stroke-width="1.2"/>
+  <rect x="20" y="150" width="5" height="56" rx="2" fill="#f87171"/>
+  <text x="33" y="164" fill="#94a3b8" font-size="8" letter-spacing="0.5">LAYER 1  ·  RUN</text>
+  <text x="33" y="179" fill="#1e293b" font-size="9">apt-get install ffmpeg</text>
+  <text x="33" y="193" fill="#dc2626" font-size="8">추천 패키지까지 전부 설치</text>
+  <text x="33" y="204" fill="#dc2626" font-size="8">불필요한 종속 패키지 포함</text>
 
-  <rect x="21" y="208" width="203" height="52" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
-  <text x="31" y="224" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 2  ·  COPY</text>
-  <text x="31" y="239" fill="#1e293b" font-size="10">*.jar  →  app.jar</text>
-  <text x="31" y="253" fill="#dc2626" font-size="9">jar 전체 단일 레이어 · 캐시 비효율</text>
+  <rect x="20" y="212" width="212" height="54" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
+  <rect x="20" y="212" width="5" height="54" rx="2" fill="#fb923c"/>
+  <text x="33" y="226" fill="#94a3b8" font-size="8" letter-spacing="0.5">LAYER 2  ·  COPY</text>
+  <text x="33" y="241" fill="#1e293b" font-size="9">*.jar  →  app.jar</text>
+  <text x="33" y="255" fill="#dc2626" font-size="8">jar 전체 단일 레이어</text>
+  <text x="33" y="266" fill="#dc2626" font-size="8">캐시 비효율</text>
 
-  <rect x="21" y="266" width="203" height="36" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
-  <text x="31" y="280" fill="#94a3b8" font-size="8" letter-spacing="1">CONFIG  ·  ENTRYPOINT</text>
-  <text x="31" y="295" fill="#dc2626" font-size="9">root 권한 실행 (USER 지정 없음)</text>
+  <rect x="20" y="272" width="212" height="44" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
+  <rect x="20" y="272" width="5" height="44" rx="2" fill="#fbbf24"/>
+  <text x="33" y="287" fill="#94a3b8" font-size="8" letter-spacing="0.5">CONFIG  ·  ENTRYPOINT</text>
+  <text x="33" y="302" fill="#dc2626" font-size="8">root 권한 실행</text>
+  <text x="33" y="313" fill="#dc2626" font-size="8">USER 지정 없음</text>
 
-  <rect x="35" y="318" width="175" height="46" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
-  <text x="122" y="334" text-anchor="middle" fill="#6b7280" font-size="9">Total Image Size</text>
-  <text x="122" y="355" text-anchor="middle" fill="#dc2626" font-size="19" font-weight="bold">497.0 MB</text>
+  <rect x="36" y="332" width="180" height="52" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="126" y="350" text-anchor="middle" fill="#6b7280" font-size="9">Total Image Size</text>
+  <text x="126" y="374" text-anchor="middle" fill="#dc2626" font-size="22" font-weight="bold">497.0 MB</text>
 
-  <!-- ========== AFTER1 panel ========== -->
-  <rect x="245" y="60" width="215" height="408" rx="10" fill="url(#greenPanel)" stroke="#86efac" stroke-width="1.5"/>
-  <text x="352" y="82" text-anchor="middle" fill="#16a34a" font-size="11" font-weight="bold" letter-spacing="2">✓  AFTER 1  (JRE)</text>
+  <!-- ========== AFTER 1 (JRE) ========== -->
+  <rect x="252" y="56" width="228" height="444" rx="10" fill="#f0fff4" stroke="#86efac" stroke-width="1.5"/>
+  <text x="366" y="76" text-anchor="middle" fill="#16a34a" font-size="10" font-weight="bold" letter-spacing="1">✓  AFTER 1  (JRE)</text>
 
-  <rect x="251" y="92" width="203" height="52" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
-  <text x="261" y="108" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 0  ·  FROM</text>
-  <text x="261" y="123" fill="#1e293b" font-size="10" font-weight="bold">eclipse-temurin:17-jre</text>
-  <text x="261" y="137" fill="#16a34a" font-size="9">런타임만 포함 · JDK 불필요 도구 제거</text>
+  <rect x="260" y="86" width="212" height="58" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
+  <rect x="260" y="86" width="5" height="58" rx="2" fill="#16a34a"/>
+  <text x="273" y="100" fill="#94a3b8" font-size="8" letter-spacing="0.5">LAYER 0  ·  FROM</text>
+  <text x="273" y="116" fill="#1e293b" font-size="9" font-weight="bold">eclipse-temurin:17-jre</text>
+  <text x="273" y="130" fill="#16a34a" font-size="8">런타임만 포함</text>
+  <text x="273" y="142" fill="#16a34a" font-size="8">JDK 불필요 도구 제거</text>
 
-  <rect x="251" y="150" width="203" height="52" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
-  <text x="261" y="166" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 1  ·  RUN</text>
-  <text x="261" y="181" fill="#1e293b" font-size="10">apt-get install --no-recommends</text>
-  <text x="261" y="195" fill="#16a34a" font-size="9">불필요한 추천 패키지 제외</text>
+  <rect x="260" y="150" width="212" height="56" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
+  <rect x="260" y="150" width="5" height="56" rx="2" fill="#4ade80"/>
+  <text x="273" y="164" fill="#94a3b8" font-size="8" letter-spacing="0.5">LAYER 1  ·  RUN</text>
+  <text x="273" y="179" fill="#1e293b" font-size="9">apt-get install ffmpeg</text>
+  <text x="273" y="193" fill="#16a34a" font-size="8">--no-install-recommends</text>
+  <text x="273" y="204" fill="#16a34a" font-size="8">불필요한 추천 패키지 제외</text>
 
-  <rect x="251" y="208" width="203" height="52" rx="6" fill="#fffbeb" stroke="#fde68a" stroke-width="1.5"/>
-  <text x="261" y="224" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 2  ·  COPY</text>
-  <text x="261" y="239" fill="#1e293b" font-size="10">*.jar  →  app.jar</text>
-  <text x="261" y="253" fill="#b45309" font-size="9">코드 변경 시 이 레이어부터 전체 재빌드</text>
+  <rect x="260" y="212" width="212" height="54" rx="6" fill="#fffbeb" stroke="#fde68a" stroke-width="1.5"/>
+  <rect x="260" y="212" width="5" height="54" rx="2" fill="#f59e0b"/>
+  <text x="273" y="226" fill="#94a3b8" font-size="8" letter-spacing="0.5">LAYER 2  ·  COPY</text>
+  <text x="273" y="241" fill="#1e293b" font-size="9">*.jar  →  app.jar</text>
+  <text x="273" y="255" fill="#b45309" font-size="8">코드 변경 시 이 레이어부터</text>
+  <text x="273" y="266" fill="#b45309" font-size="8">전체 재빌드 발생</text>
 
-  <rect x="251" y="266" width="203" height="52" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
-  <text x="261" y="282" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 3  ·  RUN + USER</text>
-  <text x="261" y="297" fill="#1e293b" font-size="10">groupadd / useradd / USER appuser</text>
-  <text x="261" y="311" fill="#16a34a" font-size="9">Privilege Escalation 방어</text>
+  <rect x="260" y="272" width="212" height="44" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
+  <rect x="260" y="272" width="5" height="44" rx="2" fill="#86efac"/>
+  <text x="273" y="287" fill="#94a3b8" font-size="8" letter-spacing="0.5">LAYER 3  ·  RUN + USER</text>
+  <text x="273" y="302" fill="#1e293b" font-size="9">groupadd / useradd / USER</text>
+  <text x="273" y="313" fill="#16a34a" font-size="8">Privilege Escalation 방어</text>
 
-  <rect x="265" y="334" width="175" height="46" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
-  <text x="352" y="350" text-anchor="middle" fill="#6b7280" font-size="9">Total Image Size</text>
-  <text x="352" y="371" text-anchor="middle" fill="#16a34a" font-size="17" font-weight="bold">308.8 MB <tspan font-size="11" fill="#15803d">↓ 37.9%</tspan></text>
+  <rect x="276" y="332" width="180" height="52" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+  <text x="366" y="350" text-anchor="middle" fill="#6b7280" font-size="9">Total Image Size</text>
+  <text x="366" y="373" text-anchor="middle" fill="#16a34a" font-size="19" font-weight="bold">308.8 MB <tspan font-size="11" fill="#15803d">↓ 37.9%</tspan></text>
 
-  <!-- ========== AFTER2 panel ========== -->
-  <rect x="475" y="60" width="215" height="408" rx="10" fill="url(#bluePanel)" stroke="#93c5fd" stroke-width="1.5"/>
-  <text x="582" y="82" text-anchor="middle" fill="#1d4ed8" font-size="11" font-weight="bold" letter-spacing="2">✓  AFTER 2  (Multi-stage)</text>
+  <!-- ========== AFTER 2 (Multi-stage) ========== -->
+  <rect x="492" y="56" width="236" height="444" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="610" y="76" text-anchor="middle" fill="#1d4ed8" font-size="10" font-weight="bold" letter-spacing="0.5">✓  AFTER 2  (Multi-stage)</text>
 
-  <!-- Stage 1 label -->
-  <rect x="481" y="92" width="203" height="16" rx="4" fill="#bfdbfe" stroke="none"/>
-  <text x="582" y="104" text-anchor="middle" fill="#1e40af" font-size="9" font-weight="bold" letter-spacing="1">─── STAGE 1 : Builder (JDK) ───</text>
+  <!-- Stage 1 -->
+  <rect x="500" y="86" width="220" height="16" rx="4" fill="#bfdbfe"/>
+  <text x="610" y="98" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="bold">── STAGE 1 : Builder (JDK) ──</text>
 
-  <rect x="481" y="113" width="203" height="40" rx="6" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/>
-  <text x="491" y="127" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 0  ·  FROM ... AS builder</text>
-  <text x="491" y="144" fill="#1e293b" font-size="10">eclipse-temurin:17-jdk</text>
+  <rect x="500" y="106" width="220" height="44" rx="6" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/>
+  <rect x="500" y="106" width="5" height="44" rx="2" fill="#60a5fa"/>
+  <text x="513" y="120" fill="#94a3b8" font-size="8">LAYER 0  ·  FROM AS builder</text>
+  <text x="513" y="135" fill="#1e293b" font-size="9">eclipse-temurin:17-jdk</text>
+  <text x="513" y="147" fill="#3b82f6" font-size="8">최종 이미지에 미포함</text>
 
-  <rect x="481" y="158" width="203" height="40" rx="6" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/>
-  <text x="491" y="172" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 1  ·  COPY + RUN</text>
-  <text x="491" y="189" fill="#1d4ed8" font-size="9" font-weight="bold">jar  →  layertools extract (4분리)</text>
+  <rect x="500" y="155" width="220" height="44" rx="6" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/>
+  <rect x="500" y="155" width="5" height="44" rx="2" fill="#93c5fd"/>
+  <text x="513" y="169" fill="#94a3b8" font-size="8">LAYER 1  ·  COPY + RUN</text>
+  <text x="513" y="184" fill="#1d4ed8" font-size="9" font-weight="bold">layertools extract</text>
+  <text x="513" y="196" fill="#3b82f6" font-size="8">jar → 4개 레이어로 분해</text>
 
   <!-- Divider -->
-  <line x1="485" y1="208" x2="686" y2="208" stroke="#93c5fd" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="582" y="221" text-anchor="middle" fill="#64748b" font-size="9">▼  아래부터만 최종 이미지에 포함</text>
+  <line x1="504" y1="208" x2="716" y2="208" stroke="#93c5fd" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="610" y="221" text-anchor="middle" fill="#64748b" font-size="8">▼ 아래부터만 최종 이미지에 포함</text>
 
-  <!-- Stage 2 label -->
-  <rect x="481" y="230" width="203" height="16" rx="4" fill="#bfdbfe" stroke="none"/>
-  <text x="582" y="242" text-anchor="middle" fill="#1e40af" font-size="9" font-weight="bold" letter-spacing="1">─── STAGE 2 : Final (JRE) ───</text>
+  <!-- Stage 2 -->
+  <rect x="500" y="230" width="220" height="16" rx="4" fill="#bfdbfe"/>
+  <text x="610" y="242" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="bold">── STAGE 2 : Final (JRE) ──</text>
 
-  <rect x="481" y="251" width="203" height="36" rx="6" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/>
-  <text x="491" y="265" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 2  ·  FROM</text>
-  <text x="491" y="279" fill="#1e293b" font-size="10">eclipse-temurin:17-jre</text>
+  <rect x="500" y="250" width="220" height="36" rx="6" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/>
+  <rect x="500" y="250" width="5" height="36" rx="2" fill="#16a34a"/>
+  <text x="513" y="264" fill="#94a3b8" font-size="8">LAYER 2  ·  FROM</text>
+  <text x="513" y="278" fill="#1e293b" font-size="9">eclipse-temurin:17-jre</text>
 
-  <rect x="481" y="292" width="203" height="36" rx="6" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/>
-  <text x="491" y="306" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 3  ·  RUN</text>
-  <text x="491" y="320" fill="#1e293b" font-size="10">ffmpeg + groupadd + useradd</text>
+  <rect x="500" y="291" width="220" height="36" rx="6" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/>
+  <rect x="500" y="291" width="5" height="36" rx="2" fill="#4ade80"/>
+  <text x="513" y="305" fill="#94a3b8" font-size="8">LAYER 3  ·  RUN</text>
+  <text x="513" y="319" fill="#1e293b" font-size="9">ffmpeg + groupadd + useradd</text>
 
-  <rect x="481" y="333" width="203" height="36" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
-  <text x="491" y="347" fill="#94a3b8" font-size="8" letter-spacing="1">LAYER 4-7  ·  COPY (4개 레이어)</text>
-  <text x="491" y="361" fill="#1d4ed8" font-size="9" font-weight="bold">deps / loader / snapshot / application</text>
+  <rect x="500" y="332" width="220" height="50" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="500" y="332" width="5" height="50" rx="2" fill="#2563eb"/>
+  <text x="513" y="347" fill="#94a3b8" font-size="8">LAYER 4–7  ·  COPY (4개 레이어)</text>
+  <text x="513" y="362" fill="#1d4ed8" font-size="8" font-weight="bold">deps / spring-boot-loader</text>
+  <text x="513" y="375" fill="#1d4ed8" font-size="8" font-weight="bold">snapshot-deps / application</text>
 
-  <rect x="495" y="383" width="175" height="46" rx="8" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
-  <text x="582" y="399" text-anchor="middle" fill="#6b7280" font-size="9">Total Image Size</text>
-  <text x="582" y="420" text-anchor="middle" fill="#1d4ed8" font-size="17" font-weight="bold">308.6 MB <tspan font-size="11" fill="#1e40af">↓ 37.9%</tspan></text>
+  <rect x="516" y="398" width="180" height="52" rx="8" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="606" y="416" text-anchor="middle" fill="#6b7280" font-size="9">Total Image Size</text>
+  <text x="606" y="439" text-anchor="middle" fill="#1d4ed8" font-size="19" font-weight="bold">308.6 MB <tspan font-size="11" fill="#1e40af">↓ 37.9%</tspan></text>
 
-  <text x="360" y="482" text-anchor="middle" fill="#94a3b8" font-size="10">* N=3 runs · 베이스 이미지 pull 포함 완전 초기화 · Ubuntu 서버 환경</text>
+  <text x="370" y="510" text-anchor="middle" fill="#94a3b8" font-size="9">* N=3 runs · 베이스 이미지 pull 포함 완전 초기화 · Ubuntu 서버 환경</text>
 </svg>

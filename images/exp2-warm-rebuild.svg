@@ -1,111 +1,105 @@
-<svg viewBox="0 0 720 370" xmlns="http://www.w3.org/2000/svg" font-family="'Courier New', monospace">
+<svg viewBox="0 0 740 400" xmlns="http://www.w3.org/2000/svg" font-family="'Courier New', monospace">
   <defs>
-    <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#f8fafc"/>
       <stop offset="100%" stop-color="#f1f5f9"/>
     </linearGradient>
-    <linearGradient id="gp" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f0fff4"/>
-      <stop offset="100%" stop-color="#ebffef"/>
-    </linearGradient>
-    <linearGradient id="bp" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#eff6ff"/>
-      <stop offset="100%" stop-color="#dbeafe"/>
-    </linearGradient>
   </defs>
 
-  <rect width="720" height="370" fill="url(#bg4)" rx="12"/>
-  <rect width="720" height="370" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
+  <rect width="740" height="400" fill="url(#bg)" rx="12"/>
+  <rect width="740" height="400" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="12"/>
 
-  <text x="360" y="32" text-anchor="middle" fill="#1e293b" font-size="15" font-weight="bold" letter-spacing="1">Warm Rebuild — 앱 코드 변경 시 재빌드 비교</text>
-  <text x="360" y="48" text-anchor="middle" fill="#94a3b8" font-size="10">베이스 이미지 캐시 유지 · 결과 이미지만 삭제 후 재빌드</text>
+  <text x="370" y="30" text-anchor="middle" fill="#1e293b" font-size="14" font-weight="bold" letter-spacing="0.5">Warm Rebuild — 앱 코드 변경 시 재빌드 비교</text>
+  <text x="370" y="46" text-anchor="middle" fill="#94a3b8" font-size="9">베이스 이미지 캐시 유지  ·  결과 이미지만 삭제 후 재빌드</text>
 
-  <!-- ===== AFTER1 Panel ===== -->
-  <rect x="20" y="58" width="315" height="270" rx="10" fill="url(#gp)" stroke="#86efac" stroke-width="1.5"/>
-  <text x="177" y="78" text-anchor="middle" fill="#16a34a" font-size="11" font-weight="bold" letter-spacing="1">AFTER 1  —  jar 단일 레이어</text>
+  <!-- ===== VS 텍스트 ===== -->
+  <text x="370" y="210" text-anchor="middle" fill="#cbd5e1" font-size="28" font-weight="bold">vs</text>
 
-  <!-- Layer: FROM JRE (cached) -->
-  <rect x="28" y="88" width="299" height="30" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
-  <rect x="28" y="88" width="5" height="30" rx="2" fill="#16a34a"/>
-  <text x="42" y="99" fill="#94a3b8" font-size="8" letter-spacing="1">FROM</text>
-  <text x="42" y="112" fill="#1e293b" font-size="10">eclipse-temurin:17-jre</text>
-  <text x="318" y="107" text-anchor="end" fill="#16a34a" font-size="9" font-weight="bold">캐시 HIT ✓</text>
+  <!-- ===== AFTER 1 패널 ===== -->
+  <rect x="12" y="56" width="340" height="320" rx="10" fill="#f0fff4" stroke="#86efac" stroke-width="1.5"/>
+  <text x="182" y="76" text-anchor="middle" fill="#16a34a" font-size="10" font-weight="bold" letter-spacing="0.5">AFTER 1  —  jar 단일 레이어</text>
 
-  <!-- Layer: RUN ffmpeg (cached) -->
-  <rect x="28" y="123" width="299" height="30" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
-  <rect x="28" y="123" width="5" height="30" rx="2" fill="#4ade80"/>
-  <text x="42" y="134" fill="#94a3b8" font-size="8" letter-spacing="1">RUN</text>
-  <text x="42" y="147" fill="#1e293b" font-size="10">apt-get install ffmpeg</text>
-  <text x="318" y="142" text-anchor="end" fill="#16a34a" font-size="9" font-weight="bold">캐시 HIT ✓</text>
+  <!-- FROM JRE cached -->
+  <rect x="20" y="86" width="324" height="34" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
+  <rect x="20" y="86" width="5" height="34" rx="2" fill="#16a34a"/>
+  <text x="33" y="99" fill="#94a3b8" font-size="8" letter-spacing="0.5">FROM</text>
+  <text x="33" y="112" fill="#1e293b" font-size="9">eclipse-temurin:17-jre</text>
+  <text x="335" y="107" text-anchor="end" fill="#16a34a" font-size="9" font-weight="bold">캐시 HIT ✓</text>
 
-  <!-- Layer: COPY jar (INVALIDATED) -->
-  <rect x="28" y="158" width="299" height="36" rx="5" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
-  <rect x="28" y="158" width="5" height="36" rx="2" fill="#f97316"/>
-  <text x="42" y="170" fill="#94a3b8" font-size="8" letter-spacing="1">COPY</text>
-  <text x="42" y="183" fill="#1e293b" font-size="10">app.jar  ←  코드 변경 감지</text>
-  <text x="42" y="189" fill="#ea580c" font-size="0">.</text>
-  <text x="318" y="181" text-anchor="end" fill="#ea580c" font-size="9" font-weight="bold">⚠ 무효화</text>
+  <!-- RUN ffmpeg cached -->
+  <rect x="20" y="125" width="324" height="34" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
+  <rect x="20" y="125" width="5" height="34" rx="2" fill="#4ade80"/>
+  <text x="33" y="138" fill="#94a3b8" font-size="8" letter-spacing="0.5">RUN</text>
+  <text x="33" y="151" fill="#1e293b" font-size="9">apt-get install ffmpeg</text>
+  <text x="335" y="146" text-anchor="end" fill="#16a34a" font-size="9" font-weight="bold">캐시 HIT ✓</text>
 
-  <!-- Layer: RUN adduser (re-runs) -->
-  <rect x="28" y="199" width="299" height="30" rx="5" fill="#fff7ed" stroke="#fde68a" stroke-width="1.5"/>
-  <rect x="28" y="199" width="5" height="30" rx="2" fill="#fbbf24"/>
-  <text x="42" y="210" fill="#94a3b8" font-size="8" letter-spacing="1">RUN + USER</text>
-  <text x="42" y="223" fill="#1e293b" font-size="10">groupadd / useradd / USER</text>
-  <text x="318" y="218" text-anchor="end" fill="#b45309" font-size="9">이하 전부 재실행</text>
+  <!-- COPY jar INVALIDATED -->
+  <rect x="20" y="164" width="324" height="40" rx="6" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
+  <rect x="20" y="164" width="5" height="40" rx="2" fill="#f97316"/>
+  <text x="33" y="178" fill="#94a3b8" font-size="8" letter-spacing="0.5">COPY</text>
+  <text x="33" y="193" fill="#1e293b" font-size="9">app.jar  ←  코드 변경 감지</text>
+  <text x="335" y="188" text-anchor="end" fill="#ea580c" font-size="9" font-weight="bold">⚠ 무효화</text>
 
-  <!-- Result -->
-  <rect x="40" y="246" width="275" height="42" rx="7" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
-  <text x="177" y="262" text-anchor="middle" fill="#6b7280" font-size="9">Warm Rebuild 시간</text>
-  <text x="177" y="280" text-anchor="middle" fill="#dc2626" font-size="18" font-weight="bold">11,841 ms</text>
-
-  <text x="177" y="316" text-anchor="middle" fill="#94a3b8" font-size="9">jar 전체 단일 레이어 → 코드 1줄 변경에도</text>
-  <text x="177" y="330" text-anchor="middle" fill="#94a3b8" font-size="9">COPY 이하 모든 레이어 재실행</text>
-
-  <!-- VS divider -->
-  <text x="360" y="200" text-anchor="middle" fill="#94a3b8" font-size="22" font-weight="bold">vs</text>
-
-  <!-- ===== AFTER2 Panel ===== -->
-  <rect x="385" y="58" width="315" height="270" rx="10" fill="url(#bp)" stroke="#93c5fd" stroke-width="1.5"/>
-  <text x="542" y="78" text-anchor="middle" fill="#1d4ed8" font-size="11" font-weight="bold" letter-spacing="1">AFTER 2  —  layertools 4개 분리</text>
-
-  <!-- Layer: FROM JRE (cached) -->
-  <rect x="393" y="88" width="299" height="26" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
-  <rect x="393" y="88" width="5" height="26" rx="2" fill="#16a34a"/>
-  <text x="407" y="99" fill="#94a3b8" font-size="8">FROM  eclipse-temurin:17-jre</text>
-  <text x="683" y="106" text-anchor="end" fill="#16a34a" font-size="9" font-weight="bold">캐시 HIT ✓</text>
-
-  <!-- Layer: RUN ffmpeg+adduser (cached) -->
-  <rect x="393" y="119" width="299" height="26" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
-  <rect x="393" y="119" width="5" height="26" rx="2" fill="#4ade80"/>
-  <text x="407" y="130" fill="#94a3b8" font-size="8">RUN  ffmpeg + groupadd + useradd</text>
-  <text x="683" y="137" text-anchor="end" fill="#16a34a" font-size="9" font-weight="bold">캐시 HIT ✓</text>
-
-  <!-- Layer: COPY dependencies (cached) -->
-  <rect x="393" y="150" width="299" height="26" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.2"/>
-  <rect x="393" y="150" width="5" height="26" rx="2" fill="#93c5fd"/>
-  <text x="407" y="161" fill="#94a3b8" font-size="8">COPY  dependencies/</text>
-  <text x="683" y="168" text-anchor="end" fill="#3b82f6" font-size="9" font-weight="bold">캐시 HIT ✓</text>
-
-  <!-- Layer: COPY spring-boot-loader (cached) -->
-  <rect x="393" y="181" width="299" height="26" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.2"/>
-  <rect x="393" y="181" width="5" height="26" rx="2" fill="#93c5fd"/>
-  <text x="407" y="192" fill="#94a3b8" font-size="8">COPY  spring-boot-loader/</text>
-  <text x="683" y="199" text-anchor="end" fill="#3b82f6" font-size="9" font-weight="bold">캐시 HIT ✓</text>
-
-  <!-- Layer: COPY application (CHANGED) -->
-  <rect x="393" y="212" width="299" height="30" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
-  <rect x="393" y="212" width="5" height="30" rx="2" fill="#2563eb"/>
-  <text x="407" y="223" fill="#94a3b8" font-size="8" letter-spacing="1">COPY</text>
-  <text x="407" y="236" fill="#1d4ed8" font-size="10" font-weight="bold">application/  ←  변경된 레이어만</text>
-  <text x="683" y="231" text-anchor="end" fill="#ea580c" font-size="9" font-weight="bold">이것만 재빌드</text>
+  <!-- RUN+USER re-runs -->
+  <rect x="20" y="209" width="324" height="34" rx="6" fill="#fff7ed" stroke="#fde68a" stroke-width="1.5"/>
+  <rect x="20" y="209" width="5" height="34" rx="2" fill="#fbbf24"/>
+  <text x="33" y="222" fill="#94a3b8" font-size="8" letter-spacing="0.5">RUN + USER</text>
+  <text x="33" y="235" fill="#1e293b" font-size="9">groupadd / useradd / USER</text>
+  <text x="335" y="230" text-anchor="end" fill="#b45309" font-size="8">이하 전부 재실행</text>
 
   <!-- Result -->
-  <rect x="405" y="256" width="275" height="42" rx="7" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
-  <text x="542" y="272" text-anchor="middle" fill="#6b7280" font-size="9">Warm Rebuild 시간</text>
-  <text x="542" y="290" text-anchor="middle" fill="#1d4ed8" font-size="18" font-weight="bold">10,203 ms  <tspan font-size="12" fill="#1e40af">↓ 13.8%</tspan></text>
+  <rect x="32" y="260" width="300" height="48" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="182" y="278" text-anchor="middle" fill="#6b7280" font-size="9">Warm Rebuild 시간</text>
+  <text x="182" y="300" text-anchor="middle" fill="#dc2626" font-size="22" font-weight="bold">11,841 ms</text>
 
-  <text x="542" y="316" text-anchor="middle" fill="#94a3b8" font-size="9">의존성 레이어는 캐시 재사용 →</text>
-  <text x="542" y="330" text-anchor="middle" fill="#94a3b8" font-size="9">앱 코드(application/) 레이어만 교체</text>
+  <text x="182" y="332" text-anchor="middle" fill="#94a3b8" font-size="8">jar 전체 단일 레이어 → 코드 1줄 변경에도</text>
+  <text x="182" y="344" text-anchor="middle" fill="#94a3b8" font-size="8">COPY 이하 모든 레이어 재실행</text>
 
-  <text x="360" y="355" text-anchor="middle" fill="#94a3b8" font-size="10">💡  배포 빈도가 높을수록 After2의 누적 시간 절약 효과가 커진다</text>
+  <!-- ===== AFTER 2 패널 ===== -->
+  <rect x="388" y="56" width="340" height="320" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="558" y="76" text-anchor="middle" fill="#1d4ed8" font-size="10" font-weight="bold" letter-spacing="0.5">AFTER 2  —  layertools 4개 분리</text>
+
+  <!-- FROM JRE cached -->
+  <rect x="396" y="86" width="324" height="28" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
+  <rect x="396" y="86" width="5" height="28" rx="2" fill="#16a34a"/>
+  <text x="409" y="97" fill="#94a3b8" font-size="8">FROM  eclipse-temurin:17-jre</text>
+  <text x="711" y="104" text-anchor="end" fill="#16a34a" font-size="9" font-weight="bold">캐시 HIT ✓</text>
+
+  <!-- RUN ffmpeg+user cached -->
+  <rect x="396" y="119" width="324" height="28" rx="6" fill="#ffffff" stroke="#86efac" stroke-width="1.2"/>
+  <rect x="396" y="119" width="5" height="28" rx="2" fill="#4ade80"/>
+  <text x="409" y="130" fill="#94a3b8" font-size="8">RUN  ffmpeg + groupadd + useradd</text>
+  <text x="711" y="137" text-anchor="end" fill="#16a34a" font-size="9" font-weight="bold">캐시 HIT ✓</text>
+
+  <!-- COPY dependencies cached -->
+  <rect x="396" y="152" width="324" height="28" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.2"/>
+  <rect x="396" y="152" width="5" height="28" rx="2" fill="#93c5fd"/>
+  <text x="409" y="163" fill="#94a3b8" font-size="8">COPY  dependencies/</text>
+  <text x="711" y="170" text-anchor="end" fill="#3b82f6" font-size="9" font-weight="bold">캐시 HIT ✓</text>
+
+  <!-- COPY spring-boot-loader cached -->
+  <rect x="396" y="185" width="324" height="28" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.2"/>
+  <rect x="396" y="185" width="5" height="28" rx="2" fill="#93c5fd"/>
+  <text x="409" y="196" fill="#94a3b8" font-size="8">COPY  spring-boot-loader/</text>
+  <text x="711" y="203" text-anchor="end" fill="#3b82f6" font-size="9" font-weight="bold">캐시 HIT ✓</text>
+
+  <!-- COPY snapshot-deps cached -->
+  <rect x="396" y="218" width="324" height="28" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.2"/>
+  <rect x="396" y="218" width="5" height="28" rx="2" fill="#93c5fd"/>
+  <text x="409" y="229" fill="#94a3b8" font-size="8">COPY  snapshot-dependencies/</text>
+  <text x="711" y="236" text-anchor="end" fill="#3b82f6" font-size="9" font-weight="bold">캐시 HIT ✓</text>
+
+  <!-- COPY application CHANGED -->
+  <rect x="396" y="251" width="324" height="34" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <rect x="396" y="251" width="5" height="34" rx="2" fill="#2563eb"/>
+  <text x="409" y="264" fill="#94a3b8" font-size="8" letter-spacing="0.5">COPY</text>
+  <text x="409" y="278" fill="#1d4ed8" font-size="9" font-weight="bold">application/  ←  변경된 레이어만</text>
+  <text x="711" y="274" text-anchor="end" fill="#ea580c" font-size="9" font-weight="bold">이것만 재빌드</text>
+
+  <!-- Result -->
+  <rect x="408" y="301" width="300" height="48" rx="8" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="558" y="319" text-anchor="middle" fill="#6b7280" font-size="9">Warm Rebuild 시간</text>
+  <text x="558" y="340" text-anchor="middle" fill="#1d4ed8" font-size="19" font-weight="bold">10,203 ms  <tspan font-size="12" fill="#1e40af">↓ 13.8%</tspan></text>
+
+  <text x="370" y="388" text-anchor="middle" fill="#94a3b8" font-size="9">💡  배포 빈도가 높을수록 After2의 누적 시간 절약 효과가 커진다</text>
 </svg>
