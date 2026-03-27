@@ -1,35 +1,35 @@
-# Docker Image Optimization — Spring Boot
+# Docker Image Optimization
 
-> JDK → JRE 전환, 보안 강화, 멀티스테이지 빌드를 통한 컨테이너 이미지 최적화 실무 적용 사례
-
----
-
-## 목차
-
-- [배경 및 문제 정의](#배경-및-문제-정의)
-- [실험 1: ValanSe — JDK → JRE + 보안 강화](#실험-1-valanse--jdk--jre--보안-강화)
-- [실험 2: Animal Diary — FFmpeg 환경 멀티스테이지 빌드](#실험-2-animal-diary--ffmpeg-환경-멀티스테이지-빌드)
-- [핵심 개념 정리](#핵심-개념-정리)
+실서비스 두 프로젝트(ValanSe, Animal Diary)의 Dockerfile을 분석하고, JDK → JRE 전환 / non-root 실행 / 멀티스테이지 빌드를 단계적으로 적용하여 이미지 크기와 재빌드 속도를 개선하였다.
 
 ---
 
-## 배경 및 문제 정의
+## 실험 결과 요약
 
-컨테이너 이미지는 작을수록, 보안은 최소 권한 원칙을 따를수록, 빌드는 캐시를 잘 활용할수록 좋다. 두 프로젝트의 Dockerfile을 분석해 비효율적인 부분을 단계적으로 개선했다.
-
-| 문제 | 설명 |
-|------|------|
-| **불필요한 이미지 크기** | JDK에는 컴파일러·디버거·개발 도구가 포함되어 있어 실행 전용 환경에 부적합 |
-| **보안 취약점** | root 사용자로 컨테이너 실행 시 탈출 공격에 취약 |
-| **빌드 캐시 비효율** | jar 전체를 단일 레이어로 묶으면 코드 한 줄만 바꿔도 전체 재빌드 발생 |
+| 프로젝트 | 개선 기법 | Before | After | 개선율 |
+|----------|-----------|:------:|:-----:|:------:|
+| ValanSe | JDK → JRE, non-root | 222.3 MB | 124.9 MB | **−43.8%** |
+| Animal Diary | JDK → JRE, `--no-install-recommends` | 497.0 MB | 308.8 MB | **−37.9%** |
+| Animal Diary | + 멀티스테이지 빌드 (Warm Rebuild) | 11,841 ms | 10,203 ms | **−13.8%** |
 
 ---
 
-## 실험 1: ValanSe — JDK → JRE + 보안 강화
+## 실험 1: ValanSe — JDK → JRE, non-root
 
-### Dockerfile 변경 사항
+ValanSe는 Spring Boot 3.2.5 기반 밸런스 게임 플랫폼으로, AWS EC2 + Docker + Nginx 구성으로 운영 중인 실서비스다.
 
-**Before**
+### 문제 정의
+
+| 항목 | Before 상태 | 문제 |
+|------|------------|------|
+| 베이스 이미지 | `eclipse-temurin:17-jdk-alpine` | CI에서 컴파일을 완료한 JAR을 실행하는 환경에 컴파일러·개발 도구 포함 |
+| 실행 유저 | root (USER 미지정) | 컨테이너 프로세스가 root 권한으로 실행됨 |
+| JAR 패턴 | `*SNAPSHOT.jar` | 릴리즈 빌드 시 파일명 불일치로 `COPY` 실패 가능성 존재 |
+
+### Dockerfile
+
+<details>
+<summary>Before</summary>
 
 ```dockerfile
 FROM eclipse-temurin:17-jdk-alpine
@@ -37,7 +37,10 @@ COPY ./build/libs/*SNAPSHOT.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=default"]
 ```
 
-**After**
+</details>
+
+<details>
+<summary>After</summary>
 
 ```dockerfile
 FROM eclipse-temurin:17-jre-alpine
@@ -54,73 +57,46 @@ USER appuser
 ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=default"]
 ```
 
-**레이어 구조 비교**
+</details>
+
+### 레이어 구조 변화
 
 ![Layer Structure Comparison](./images/layer-structure.svg)
 
-| 항목 | Before | After | 이유 |
-|------|--------|-------|------|
-| 베이스 이미지 | `eclipse-temurin:17-jdk-alpine` | `eclipse-temurin:17-jre-alpine` | 실행 전용 환경에는 JRE로 충분 |
-| WORKDIR | 없음 (루트에서 실행) | `/app` | 작업 경로 명시로 레이어 예측성 향상 |
-| JAR 패턴 | `*SNAPSHOT.jar` | `*.jar` | 불필요한 네이밍 제약 제거 |
-| 실행 유저 | `root` | `appuser` (system user) | Privilege Escalation 방어 |
-
----
+JDK → JRE 전환으로 컴파일러·개발 도구 레이어가 제거된다. 최종 이미지에는 JVM 런타임과 애플리케이션 JAR만 포함된다.
 
 ### 벤치마크 결과
 
-> 측정 조건: N=5 runs, 베이스 이미지 pull 포함 완전 초기화, Ubuntu 서버 환경
+측정 조건: N=5, 베이스 이미지 Pull 포함 완전 초기화, Ubuntu 서버 환경
 
 ![Benchmark Results](./images/benchmark-results.svg)
 
-| 항목 | Before (JDK) | After (JRE) | 개선 |
+| 항목 | Before (JDK) | After (JRE) | 변화 |
 |------|:---:|:---:|:---:|
-| 평균 빌드 시간 | 8,736 ms | 8,572 ms | −1.9% (오차 범위) |
+| 평균 빌드 시간 | 8,736 ms | 8,572 ms | −1.9% (오차 범위 내) |
 | **이미지 크기** | **222.3 MB** | **124.9 MB** | **−43.8%** |
 
-<details>
-<summary>raw 측정값 보기</summary>
-
-```
-Run결과 (BEFORE)          Run결과 (AFTER)
-  Run 1: 10,099ms           Run 1:  8,990ms
-  Run 2:  8,637ms           Run 2:  9,095ms
-  Run 3:  8,221ms           Run 3:  8,261ms
-  Run 4:  8,802ms           Run 4:  8,158ms
-  Run 5:  7,923ms           Run 5:  8,358ms
-  ─────────────────         ─────────────────
-  Avg  :  8,736ms           Avg  :  8,572ms
-  Size : 222.3 MB           Size : 124.9 MB
-```
-
-</details>
-
-**결과 해석**
-
-- **이미지 크기 97.4 MB 감소**: ECR 등 컨테이너 레지스트리 저장 비용 절감, CI/CD Cold Start 환경에서 pull 속도 향상
-- **빌드 시간 차이 없음**: 두 Dockerfile 모두 `COPY` 한 번이 실제 빌드 작업의 전부이므로 레이어 처리량이 동일 → 통계적으로 유의미하지 않음
+빌드 시간 차이는 통계적으로 유의미하지 않다. 두 Dockerfile 모두 실질적인 빌드 처리가 `COPY` 명령 하나이므로 레이어 처리량이 동일하기 때문이다.
 
 ---
 
-## 실험 2: Animal Diary — FFmpeg 환경 멀티스테이지 빌드
+## 실험 2: Animal Diary — FFmpeg 환경, 멀티스테이지 빌드
 
-### 실험 환경과 문제 정의
+Animal Diary는 사진·동영상 처리를 위해 FFmpeg가 필요한 환경이다. FFmpeg는 설치 시 다수의 종속 패키지를 포함하는 대형 라이브러리로, 이미지 크기에 지배적인 영향을 미친다.
 
-Animal Diary 앱은 사진·동영상 처리를 위해 **FFmpeg**가 필요한 환경이다. FFmpeg는 영상·음성 변환을 담당하는 대형 미디어 처리 라이브러리로, 설치하면 수십 개의 종속 패키지가 함께 딸려온다.
+### 문제 정의
 
-
-| 문제 | Before 상태 | 영향 |
+| 항목 | Before 상태 | 문제 |
 |------|------------|------|
-| JDK 사용 | 컴파일러까지 실행 이미지에 탑재 | 불필요한 크기 증가 |
-| 추천 패키지 포함 | `apt-get install ffmpeg` 기본값 | 사용 안 하는 패키지까지 설치 |
-| jar 단일 레이어 | COPY 하나로 전체 묶음 | 코드 변경마다 전체 재빌드 |
-| root 실행 | USER 지정 없음 | 컨테이너 탈출 시 호스트 위협 |
+| 베이스 이미지 | `eclipse-temurin:17.0.12_7-jdk` | 실행 환경에 컴파일러 포함 |
+| FFmpeg 설치 | `apt-get install -y ffmpeg` | 추천 패키지(recommends) 일괄 설치로 불필요한 패키지 포함 |
+| JAR 레이어 | 단일 `COPY` | 소스 코드 변경 시 JAR 전체 레이어 무효화, 완전 재빌드 발생 |
+| 실행 유저 | root (USER 미지정) | 컨테이너 프로세스가 root 권한으로 실행됨 |
 
----
+### Dockerfile
 
-### Dockerfile 변경 사항
-
-**Before** — JDK + FFmpeg, root 실행, 단일 jar 레이어
+<details>
+<summary>Before — JDK, root 실행, 단일 JAR 레이어</summary>
 
 ```dockerfile
 FROM eclipse-temurin:17.0.12_7-jdk
@@ -133,7 +109,10 @@ COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
 ```
 
-**After 1** — JRE + `--no-install-recommends` + non-root
+</details>
+
+<details>
+<summary>After 1 — JRE, --no-install-recommends, non-root</summary>
 
 ```dockerfile
 FROM eclipse-temurin:17.0.12_7-jre
@@ -156,7 +135,10 @@ USER appuser
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 ```
 
-**After 2** — 멀티스테이지 빌드 + layertools로 jar 4개 레이어 분리
+</details>
+
+<details>
+<summary>After 2 — 멀티스테이지 빌드 + Spring Boot layertools</summary>
 
 ```dockerfile
 # Stage 1: JAR 레이어 분리 (최종 이미지에 포함되지 않음)
@@ -166,7 +148,7 @@ ARG JAR_FILE=/build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
-# Stage 2: 실행 이미지 (이것만 배포됨)
+# Stage 2: 실행 이미지 (배포 대상)
 FROM eclipse-temurin:17.0.12_7-jre
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ffmpeg && \
@@ -182,167 +164,41 @@ USER appuser
 ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
 ```
 
-**레이어 구조 비교**
+</details>
+
+### 레이어 구조 변화
 
 ![Layer Structure Comparison Exp2](./images/exp2-layer-structure.svg)
 
-| 항목 | Before | After 1 | After 2 |
-|------|--------|---------|---------|
-| 베이스 이미지 | JDK (무거움) | JRE (경량) | JRE (경량) |
-| FFmpeg 설치 | 추천 패키지 포함 | `--no-install-recommends` | `--no-install-recommends` |
-| jar 구조 | 단일 레이어 | 단일 레이어 | 4개 레이어 분리 |
-| 실행 유저 | root | appuser | appuser |
-| 빌드 스테이지 | 1개 | 1개 | 2개 (builder + final) |
+Spring Boot `layertools`는 JAR을 변경 빈도 기준으로 4개 레이어로 분리한다. 소스 코드 변경 시 `application/` 레이어만 교체되고, 용량이 큰 의존성 레이어 3개는 캐시를 재사용한다.
 
----
+| 레이어 | 내용 | 변경 빈도 |
+|--------|------|---------|
+| `dependencies/` | 외부 라이브러리 (Spring, Jackson 등) | 낮음 |
+| `spring-boot-loader/` | Spring Boot 실행기 | 매우 낮음 |
+| `snapshot-dependencies/` | SNAPSHOT 의존성 | 낮음 |
+| `application/` | 애플리케이션 소스 코드 | **높음** |
 
 ### 벤치마크 결과
 
-> 측정 조건: N=3 runs, 베이스 이미지 pull 포함 완전 초기화, Ubuntu 서버 환경
+**Phase 1: Cold Build** — 측정 조건: N=3, 베이스 이미지 Pull 포함 완전 초기화, Ubuntu 서버 환경
 
 ![Benchmark Results Exp2](./images/exp2-benchmark.svg)
-
-**Phase 1: Cold Build (풀 재빌드)**
 
 | 항목 | Before (JDK) | After 1 (JRE) | After 2 (Multi-stage) |
 |------|:---:|:---:|:---:|
 | 평균 빌드 시간 | 212,644 ms | 130,845 ms | 120,472 ms |
 | **이미지 크기** | **497.0 MB** | **308.8 MB** | **308.6 MB** |
-| 크기 절감 | 기준 | **−37.9%** | **−37.9%** |
+| 크기 절감율 | 기준 | **−37.9%** | **−37.9%** |
 
-**Phase 2: Warm Rebuild (앱 코드 변경 시)**
+After 1과 After 2의 이미지 크기가 거의 동일한 이유: FFmpeg가 이미지 크기의 약 180 MB를 차지하기 때문이다. 멀티스테이지 빌드의 효과는 이미지 크기가 아닌 재빌드 속도에서 나타난다.
+
+**Phase 2: Warm Rebuild** — 애플리케이션 코드 변경 후 재빌드
 
 ![Warm Rebuild Comparison](./images/exp2-warm-rebuild.svg)
 
-| 항목 | After 1 (JRE) | After 2 (Multi-stage) | 개선 |
+| 항목 | After 1 (단일 레이어) | After 2 (layertools 분리) | 개선율 |
 |------|:---:|:---:|:---:|
 | 재빌드 시간 | 11,841 ms | 10,203 ms | **−13.8%** |
 
-<details>
-<summary>raw 측정값 보기</summary>
-
-```
-Phase 1 — Cold Build
-  BEFORE               AFTER 1              AFTER 2
-  Run 1: 212,900ms     Run 1: 119,061ms     Run 1: 115,024ms
-  Run 2: 236,247ms     Run 2: 159,098ms     Run 2: 115,970ms
-  Run 3: 188,785ms     Run 3: 114,377ms     Run 3: 130,422ms
-  ─────────────────    ─────────────────    ─────────────────
-  Avg  : 212,644ms     Avg  : 130,845ms     Avg  : 120,472ms
-  Size :   497.0 MB    Size :   308.8 MB    Size :   308.6 MB
-
-Phase 2 — Warm Rebuild
-  After 1: 11,841ms
-  After 2: 10,203ms  (−13.8%)
-```
-
-</details>
-
----
-
-### 결과 해석
-
-**왜 After 1과 After 2의 이미지 크기가 거의 같은가?**
-
-두 버전 모두 FFmpeg가 포함되어 있고, FFmpeg가 이미지 크기의 대부분(~180 MB)을 차지하기 때문이다. JDK → JRE 전환 효과는 있지만, FFmpeg의 무게가 압도적이라 After 1과 After 2 사이의 차이는 미미하다.
-
-**왜 Cold Build에서 Before가 훨씬 느린가?**
-
-Before는 JDK 이미지(After의 JRE보다 큼)를 pull하는 시간이 추가된다. 나머지 대부분의 시간은 FFmpeg 설치가 차지한다. `--no-install-recommends`로 불필요한 패키지를 제거해도 FFmpeg 자체가 워낙 크기 때문에 절감 효과는 제한적이다.
-
-**After 2의 진짜 장점은 어디에 있는가?**
-
-Cold Build에서의 시간 차이보다 **Warm Rebuild에서의 차이**가 실제 운영에서 더 중요하다. 코드를 배포할 때마다 CI/CD 파이프라인은 이미지를 새로 빌드한다. After 1은 코드를 한 줄만 바꿔도 jar 전체를 다시 패키징한다. After 2는 변경된 `application/` 레이어만 교체하고 의존성 레이어는 캐시를 재사용한다. 배포 횟수가 많을수록 누적 절약 효과가 커진다.
-
----
-
-## 핵심 개념 정리
-
-### 1. JDK vs JRE
-
-컨테이너 안에서 애플리케이션은 **실행**만 진행한다. 컴파일은 CI 환경에서 Gradle/Maven이 이미 완료하고 JAR로 패키징한 상태이기 때문에, JDK의 개발 도구는 불필요하다.
-
-| | JDK | JRE |
-|---|---|---|
-| **포함 내용** | 컴파일러(javac) + 런타임 + 개발 도구 전체 | 실행에 필요한 런타임만 |
-| **용도** | 소스 코드 작성 및 빌드 | 완성된 JAR 실행 |
-| **이미지 크기** | 크다 | 작다 |
-| **컨테이너 적합성** | 불필요하게 무거움 | 딱 맞음 |
-
-```dockerfile
-# Bad — 컴파일러를 실행 환경에 탑재
-FROM eclipse-temurin:17-jdk-alpine
-
-# Good — 실행만 할 거라면 JRE로 충분
-FROM eclipse-temurin:17-jre-alpine
-```
-
-> 베이스 이미지 한 줄 변경만으로 크기가 20~43% 감소하고, 내장 바이너리 수가 줄어 CVE 노출 가능성도 함께 낮아진다.
-
----
-
-### 2. 레이어 캐싱 전략
-
-Docker는 **변경된 레이어부터 이하 모든 레이어를 무효화**한다. 자주 바뀌는 레이어는 아래에, 잘 바뀌지 않는 레이어는 위에 배치해야 캐시를 최대한 재사용할 수 있다.
-
-![Layer Caching Strategy](./images/layer-caching.svg)
-
-**나쁜 예 — 소스 변경 시마다 의존성 재설치**
-
-```dockerfile
-FROM python:3.11
-COPY . /app                          # 소스 코드가 위에 있으면 문제
-WORKDIR /app
-RUN pip install -r requirements.txt  # 위 COPY가 바뀌면 항상 재실행됨
-```
-
-**좋은 예 — 의존성 캐시 재사용**
-
-```dockerfile
-FROM python:3.11
-WORKDIR /app
-COPY requirements.txt .              # 의존성 명세만 먼저 복사 (잘 안 바뀜)
-RUN pip install -r requirements.txt  # requirements.txt 불변 시 캐시 재사용
-COPY . .                             # 소스 코드는 마지막에
-```
-
-> 소스 코드가 바뀌어도 `requirements.txt`가 그대로라면 `pip install` 레이어는 캐시를 그대로 사용한다.
-
----
-
-### 3. 멀티스테이지 빌드
-
-하나의 Dockerfile 안에 여러 `FROM`을 사용해 빌드 환경과 실행 환경을 분리하는 기법이다.
-
-
-```dockerfile
-# Stage 1: 빌드 환경 (최종 이미지에 포함되지 않음)
-FROM eclipse-temurin:17-jdk AS builder
-WORKDIR /app
-COPY app.jar .
-RUN java -Djarmode=layertools -jar app.jar extract
-
-# Stage 2: 실행 환경 (이것만 배포됨)
-FROM eclipse-temurin:17-jre
-COPY --from=builder /app/dependencies/ ./
-COPY --from=builder /app/application/ ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
-```
-
-**layertools의 역할**
-
-Spring Boot의 `layertools`는 jar 파일을 변경 빈도에 따라 4개 레이어로 분리한다.
-
-| 레이어 | 내용 | 변경 빈도 |
-|--------|------|---------|
-| `dependencies/` | 외부 라이브러리 (Spring, Jackson 등) | 낮음 — 캐시 HIT |
-| `spring-boot-loader/` | Spring Boot 실행기 | 매우 낮음 — 캐시 HIT |
-| `snapshot-dependencies/` | SNAPSHOT 의존성 | 낮음 — 캐시 HIT |
-| `application/` | 내가 작성한 코드 | **높음 — 항상 변경** |
-
-코드를 수정하면 `application/` 레이어만 교체되고, 무거운 의존성 레이어 3개는 캐시를 그대로 재사용한다.
-
-| 방식 | 코드 변경 후 재빌드 | 이유 |
-|------|:---:|------|
-| 단일 jar 레이어 (After 1) | jar 전체 재처리 | 레이어 단위가 너무 큼 |
-| layertools 분리 (After 2) | application/ 만 교체 | 변경된 레이어만 무효화 |
+After 1은 소스 코드가 변경되면 JAR 전체를 단일 레이어로 재처리한다. After 2는 `application/` 레이어만 교체하고 의존성 레이어 3개는 캐시를 재사용한다. CI/CD 파이프라인에서 배포 사이클마다 발생하는 재빌드에 직접 적용되는 개선이다.
